@@ -1,0 +1,86 @@
+.jumbotron {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/img/bg1.jpg');
+    background-size: cover;
+    height: 35rem;
+}
+
+.jumbotron .display-4 {
+    text-align: center;
+    color: #fff;
+    margin-top: 8rem;
+    font-weight: normal;
+    font-size: 3.5rem;
+    line-height: 4rem;
+    text-shadow: 1px 1px 1px 1px rgb(0, 0, 0.7);
+    padding: 0 4rem;
+}
+
+.jumbotron .display-4 span {
+    font-weight: bold;
+}
+
+.content {
+    padding: 30px;
+    box-shadow: 0 3px 20px rgb(0, 0, 0, 0.3);
+    border-radius: 5px;
+    margin-top: -120px;
+}
+
+.type-panel img {
+    width: 6rem;
+    height: 6rem;
+    margin-right: 15px;
+}
+
+.type-panel img.mngr {
+    margin-right: 20px;
+}
+
+.type-panel a:hover {
+    text-decoration: none;
+}
+
+.inner {
+    align-items: center;
+}
+
+@media screen and (max-width: 1195px) {
+    .jumbotron .display-4 {
+        padding: 0 3rem;
+    }
+}
+
+@media screen and (max-width: 986px) {
+    .jumbotron {
+        height: 30rem;
+    }
+    .jumbotron .display-4 {
+        margin-top: 3rem;
+        padding: 0;
+    }
+    .content {
+        margin-top: -160px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .jumbotron {
+        display: none;
+    }
+    .content {
+        border-radius: 0;
+        margin-top: 4rem;
+        box-shadow: 3px 3px 3px 3px rgb(0, 0, 0, 0.3);
+        width: 80%;
+    }
+    .inner {
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .type-panel img {
+        width: 5rem;
+        height: 5rem;
+    }
+}
