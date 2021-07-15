@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Kasir</title>
+    
+    <link rel="shortcut icon" href="/img/kasir.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -101,6 +103,11 @@
                             {{ Session::get('success') }}
                         </div>
                     @endif
+                    @if (Session::get('fail'))
+                        <div class="alert alert-danger">
+                            {{ Session::get('fail') }}
+                        </div>
+                    @endif
                     @csrf
                     <h4 class="text-center my-5">Transaksi Pembelian</h4>
                     @foreach ($datas as $data)
@@ -112,8 +119,8 @@
                         </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="id_kasir">Kasir ID</label>
-                        <select class="form-control" id="id_kasir" name="id_kasir">
+                        <label for="kasir">Kasir ID</label>
+                        <select class="form-control" id="kasir" name="kasir">
                         <option>{{ $data->kasir }}</option>
                         </select>
                     </div>

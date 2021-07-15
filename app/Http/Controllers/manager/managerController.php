@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\manager;
 
+use App\Helpers\Helper;
+use App\Helpers\UserKode;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +37,18 @@ class managerController extends Controller
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->akses = $request->akses;
-        $save = $user->save();
+        $getUser = User::all();
+        $id = count($getUser);
+        if($user->akses == 'Kasir'){
+            $user->kode_user = UserKode::IDGenerator(new User, 'kode_user', 4, 'KS', $id);
+            $save = $user->save();
+        } else if($user->akses == 'Admin') {
+            $user->kode_user = UserKode::IDGenerator(new User, 'kode_user', 4, 'AD', $id);
+            $save = $user->save();
+        } else {
+            $user->kode_user = UserKode::IDGenerator(new User, 'kode_user', 4, 'MN', $id);
+            $save = $user->save();
+        }
 
         if ($save) {
             return redirect()->back()->with('success', 'Akun berhasil didaftarkan!');
@@ -93,27 +106,17 @@ class managerController extends Controller
 
     public function getFaktur()
     {
-        $datas = Penjualan::orderBy('kode_faktur', 'desc')->first()->get();
-        foreach ($datas as $data) {
-            $kode_faktur = $data->kode_faktur;
-            $tanggal = $data->tanggal;
-            $username = $data->kasir['name'];
-            $judul = $data->book['judul'];
-            $jumlah_beli = $data->jumlah_beli;
-            $total_harga = $data->total_harga;
-            $bayar = $data->bayar;
-            $kembalian = $data->kembalian;
-        }
-        return view('dashboard.manager.laporan.struk', compact('kode_faktur', 'tanggal', 'username', 'judul', 'jumlah_beli', 'total_harga', 'bayar', 'kembalian'));
+        $datas = Penjualan::orderBy('kode_faktur', 'desc')->limit(1)->get();
+        return view('dashboard.manager.laporan.struk', compact('datas'));
     }
 
     public function cetakFaktur()
     {
-        $datas = Penjualan::orderBy('kode_faktur', 'desc')->first()->get();
+        $datas = Penjualan::orderBy('kode_faktur', 'desc')->limit(1)->get();
         foreach ($datas as $data) {
             $kode_faktur = $data->kode_faktur;
             $tanggal = $data->tanggal;
-            $username = $data->kasir['name'];
+            $username = $data->getKasir['name'];
             $judul = $data->book['judul'];
             $jumlah_beli = $data->jumlah_beli;
             $total_harga = $data->total_harga;
@@ -216,7 +219,7 @@ class managerController extends Controller
 
     public function filterPenulis()
     {
-        $books = Book::all();
+        $books = Book::select('penulis')->distinct()->get();;
         return view('dashboard.manager.laporan.filter_penulis', compact('books'));
     }
 
@@ -237,6 +240,58 @@ class managerController extends Controller
         $penulis = $penulis;
         $pdf = PDF::loadView('dashboard.manager.laporan.filter_penulis_cetak', compact('books', 'no', 'total', 'penulis'));
         return $pdf->download('buku_per_penulis.pdf');
+    }
+
+    public function bukuTakterjual()
+    {
+        $books = Book::where('terjual', 0)->simplePaginate(5);
+        $no = 1;
+        $total = count($books);
+        return view('dashboard.manager.laporan.buku_takterjual', compact('books', 'no', 'total'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function bukuTakterjualSearch(Request $request)
+    {
+        $search = $request->search;
+        $books = Book::where('judul', 'LIKE', "%{$search}%")->get();
+        $no = 1;
+        $total = count($books);
+        return view('dashboard.manager.laporan.buku_takterjual_search', compact('books', 'no', 'total'));
+    }
+
+    public function bukuTakterjualCetak()
+    {
+        $books = Book::where('terjual', 0)->get();
+        $no = 1;
+        $total = count($books);
+        $pdf = PDF::loadView('dashboard.manager.laporan.buku_takterjual_cetak', compact('books', 'no', 'total'));
+        return $pdf->download('data_buku_takterjual.pdf');
+    }
+
+    public function bukuTerjual()
+    {
+        $books = Book::where('terjual', '>', 0)->orderBy('stok', 'desc')->simplePaginate(5);
+        $no = 1;
+        $total = count($books);
+        return view('dashboard.manager.laporan.buku_terjual', compact('books', 'no', 'total'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function bukuTerjualSearch(Request $request)
+    {
+        $search = $request->search;
+        $books = Book::where('judul', 'LIKE', "%{$search}%")->get();
+        $no = 1;
+        $total = count($books);
+        return view('dashboard.manager.laporan.buku_terjual_search', compact('books', 'no', 'total'));
+    }
+
+    public function bukuTerjualCetak()
+    {
+        $books = Book::where('terjual', '>', 0)->orderBy('stok', 'desc')->simplePaginate(5);
+        $no = 1;
+        $total = count($books);
+        $pdf = PDF::loadView('dashboard.manager.laporan.buku_terjual_cetak', compact('books', 'no', 'total'));
+        return $pdf->download('data_buku_terjual.pdf');
     }
 
     public function dataPasok()
@@ -285,11 +340,11 @@ class managerController extends Controller
 
     public function pasokFilterResult($nama_distributor)
     {
-        $distri = Distributor::where('nama_distributor', $nama_distributor)->get('id');
+        $distri = Distributor::where('nama_distributor', $nama_distributor)->get();
         foreach ($distri as $book) {
-            $id = $book->id;
+            $kode = $book->kode_distributor;
         }
-        $data_pasok = Pasok::where('id_distributor', $id)->get();
+        $data_pasok = Pasok::where('kode_distributor', $kode)->get();
         $total = count($data_pasok);
         $no = 1;
         $nama = $nama_distributor;
@@ -298,11 +353,11 @@ class managerController extends Controller
 
     public function cetakFilterPasok($nama)
     {
-        $distri = Distributor::where('nama_distributor', $nama)->get('id');
-        foreach ($distri as $book) {
-            $id = $book->id;
+        $distri = Distributor::where('nama_distributor', $nama)->get();
+        foreach ($distri as $dt) {
+            $id = $dt->kode_distributor;
         }
-        $datas = Pasok::where('id_distributor', $id)->get();
+        $datas = Pasok::where('kode_distributor', $id)->get();
         $no = 1;
         $total = count($datas);
         $nama = $nama;
@@ -325,6 +380,7 @@ class managerController extends Controller
         $total = count($datas);
         $pdf = PDF::loadView('dashboard.manager.laporan.data_user_cetak', compact('datas', 'total', 'no'));
         return $pdf->download('data_user.pdf');
+        // return view('dashboard.manager.laporan.data_user_cetak', compact('datas', 'total', 'no'));
     }
 
     public function searchUser(Request $request)
@@ -333,7 +389,16 @@ class managerController extends Controller
         $datas = User::where('name','LIKE', "%{$search}%")->get();
         $no = 1;
         $total = count($datas);
-        return view('dashboard.manager.laporan.data_user_search', compact('datas', 'no', 'total'));
+        return view('dashboard.manager.laporan.data_user_search', compact('datas', 'no', 'total', 'search'));
+    }
+
+    public function searchUserCetak($nama)
+    {
+        $datas = User::where('name', 'LIKE', "%{$nama}%")->get();
+        $no = 1;
+        $total = count($datas);
+        $pdf = PDF::loadView('dashboard.manager.laporan.data_user_cetak', compact('datas', 'total', 'no'));
+        return $pdf->download('data_user.pdf');
     }
 
     public function editUser()

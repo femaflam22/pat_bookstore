@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Admin</title>
+    
+    <link rel="shortcut icon" href="/img/admin.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -97,6 +99,8 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="{{route('admin.buku.data') }}">Semua Data Buku</a>
                             <a class="dropdown-item" href="{{ route('admin.buku.filter') }}">Filter Penulis Buku</a>
+                            <a class="dropdown-item" href="{{ route('admin.buku.takterjual') }}">Buku yang Tidak Pernah Terjual</a>
+                            <a class="dropdown-item" href="{{ route('admin.buku.terjual') }}">Buku yang Terjual</a>
                             <a class="dropdown-item" href="{{ route('admin.pasok.data') }}">Pasok Buku</a>
                             <a class="dropdown-item" href="{{ route('admin.pasok.filter') }}">Filter Pasok Buku</a>
                         </div>
@@ -126,14 +130,14 @@
                         <span class="text-danger mt-2">@error('buku_kode'){{ $message }}@enderror</span>
                     </div>
                     <div class="form-group">
-                        <label for="id_distributor">Kode Distributor</label>
-                        <select class="form-control" id="id_distributor" name="id_distributor">
-                        <option>{{$data->distributor['id']}}</option>
+                        <label for="kode_distributor">Kode Distributor</label>
+                        <select class="form-control" id="kode_distributor" name="kode_distributor">
+                        <option>{{$data->distributor['kode_distributor']}}</option>
                             @foreach ($distributors as $dtbt)
-                                <option>{{$dtbt->id}}</option>
+                                <option>{{$dtbt->kode_distributor}}</option>
                             @endforeach
                             </select>
-                        <span class="text-danger mt-2">@error('id_distributor'){{ $message }}@enderror</span>
+                        <span class="text-danger mt-2">@error('kode_distributor'){{ $message }}@enderror</span>
                     </div>
                     <div class="form-group">
                         <label for="jumlah">Jumlah Pasok</label>
@@ -146,6 +150,7 @@
                         <span class="text-danger mt-2">@error('tanggal'){{ $message }}@enderror</span>
                     </div>
                     <button type="submit" class="btn btn-primary">Edit</button>
+                    <a href="{{ route('admin.pasok') }}" class="btn btn-info text-white text-decoration-none">Kembali</a>
                 </form>
                 <hr class="my-5">
             </div>

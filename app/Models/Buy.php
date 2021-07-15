@@ -10,6 +10,7 @@ class Buy extends Model
     use HasFactory;
     protected $table = 'buys';
     protected $primaryKey = 'id';
+    protected $timestamp = false;
     protected $fillable = [
         'kode_faktur',
         'judul',

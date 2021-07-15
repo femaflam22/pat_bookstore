@@ -11,6 +11,7 @@ class Distributor extends Model
     use HasFactory;
 
     protected $fillable = [
+        'kode_distributor',
         'nama_distributor',
         'alamat',
         'telpon',

@@ -1,33 +1,33 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Manager</title>
+    <title>Fema's Bookstore</title>
 </head>
-<body>
+<body style="margin: 25px 0 0 0; padding: 0; box-sizing: border-box;">
     <h2 style="text-align: center;">Struk Pembelian</h2>
-    <div class="konten">
-        <table style="text-align: center;" border="1">
+    <div class="konten" style="display: flex; justify-content: center;">
+        <table style="border-collapse: collapse; margin: 25px 0; font-size: 1rem; border: 1px solid #333">
                     <tr>
-                    <th colspan="2">No Faktur</th>
-                    <td colspan="2">{{$kode_faktur}}</td>
-                    <th colspan="2">Tanggal</th>
-                    <td colspan="2">{{$tanggal}}</td>
-                    <th scope="col">Kasir</th>
-                    <td scope="col">{{$username}}</td>
+                    <th style="padding: 15px 10px; text-align: center; border: 1px solid #333;">No Faktur</th>
+                    <td style="padding: 15px 10px; text-align: center; border: 1px solid #333;">{{$kode_faktur}}</td>
+                    <th style="padding: 15px 10px; text-align: center; border: 1px solid #333;">Tanggal</th>
+                    <td style="padding: 15px 10px; text-align: center; border: 1px solid #333;">{{$tanggal}}</td>
+                    <th style="padding: 15px 10px; text-align: center; border: 1px solid #333;">Judul Buku</th>
+                    <td style="padding: 15px 10px; text-align: center; border: 1px solid #333;">{{$judul}}</td>
                     </tr>
                     <tr>
-                    <th colspan="2">Judul Buku</th>
-                    <td colspan="2">{{$judul}}</td>
-                    <th colspan="2">Jumlah Beli</th>
-                    <td colspan="2">{{$jumlah_beli}}</td>
-                    <th colspan="2">Total Harga</th>
-                    <td colspan="2">{{$total_harga}}</td>
+                    <th style="padding: 15px 10px; text-align: center; border: 1px solid #333;">Kasir</th>
+                    <td style="padding: 15px 10px; text-align: center; border: 1px solid #333;">{{$username}}</td>
+                    <th style="padding: 15px 10px; text-align: center; border: 1px solid #333;">Total Harga</th>
+                    <td style="padding: 15px 10px; text-align: center; border: 1px solid #333;">{{$total_harga}}</td>
+                    <th style="padding: 15px 10px; text-align: center; border: 1px solid #333;">Jumlah Beli</th>
+                    <td style="padding: 15px 10px; text-align: center; border: 1px solid #333;">{{$jumlah_beli}}</td>
                     </tr>
                     <tr>
-                    <th colspan="2">Bayar</th>
-                    <td colspan="2">{{$bayar}}</td>
-                    <th colspan="2">Kembalian</th>
-                    <td colspan="2">{{$kembalian}}</td>
+                    <th style="padding: 15px 10px; text-align: center; border: 1px solid #333;">Bayar</th>
+                    <td style="padding: 15px 10px; text-align: center; border: 1px solid #333;">{{$bayar}}</td>
+                    <th style="padding: 15px 10px; text-align: center; border: 1px solid #333;">Kembalian</th>
+                    <td style="padding: 15px 10px; text-align: center; border: 1px solid #333;" colspan="3">{{$kembalian}}</td>
                     </tr>
                 </table>
     </div>

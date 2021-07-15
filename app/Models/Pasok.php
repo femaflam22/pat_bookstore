@@ -12,14 +12,14 @@ class Pasok extends Model
     use HasFactory;
     protected $fillable = [
         'buku_kode',
-        'id_distributor',
+        'kode_distributor',
         'jumlah',
         'tanggal',
     ];
 
     public function distributor()
     {
-        return $this->hasOne(Distributor::class,'id','id_distributor');
+        return $this->hasOne(Distributor::class,'kode_distributor','kode_distributor');
     }
     public function book()
     {

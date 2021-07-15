@@ -85,6 +85,7 @@
                 <thead class="thead-light">
                     <tr>
                     <th scope="col">No</th>
+                    <th scope="col">Kode User</th>
                     <th scope="col">Nama</th>
                     <th scope="col">Username</th>
                     <th scope="col">Alamat</th>
@@ -98,6 +99,7 @@
                     @foreach ($datas as $data)
                     <tr>
                     <td>{{$no++}}</td>
+                    <td>{{$data->kode_user}}</td>
                     <td>{{$data->name}}</td>
                     <td>{{$data->username}}</td>
                     <td>{{$data->address}}</td>

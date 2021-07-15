@@ -25,7 +25,7 @@ class transaksiController extends Controller
         $request->validate([
             'judul' => 'required',
             'jumlah_beli' => 'required|numeric',
-            'id_kasir' => 'required',
+            'kasir' => 'required',
         ]);
         $book = Book::where('judul', $request->judul)->get();
         foreach ($book as $bk) {
@@ -38,12 +38,12 @@ class transaksiController extends Controller
             $buy = Penjualan::all();
             $id = count($buy);
             $faktur_kode = Faktur::IDGenerator(new Buy, 'kode_faktur', 8, 'FK', $id);
-            Buy::create([
-                'kode_faktur' => $faktur_kode,
-                'judul' => $request->judul,
-                'jumlah_beli' => $request->jumlah_beli,
-                'kasir' => $request->id_kasir,
-            ]);
+            $addBuy = new Buy();
+            $addBuy->kode_faktur = $faktur_kode;
+            $addBuy->judul = $request->judul;
+            $addBuy->jumlah_beli = $request->jumlah_beli;
+            $addBuy->kasir = $request->kasir;
+            $addBuy->save();
             return redirect()->route('kasir.pembelian.add', $faktur_kode)->with('success', 'Silahkan lanjutkan proses pembelian. Abaikan 6 input pertama');
         }
     }
@@ -62,8 +62,9 @@ class transaksiController extends Controller
             $diskon = $kd->diskon;
             $ppn = $kd->ppn;
         }
-        $new_diskon = $harga*$diskon/100;
-        $total = ($harga*$jumlah)+$ppn-$new_diskon;
+        $pembelian = $harga * $jumlah;
+        $new_diskon = $pembelian*$diskon/100;
+        $total = $pembelian+$ppn-$new_diskon;
         return view('dashboard.kasir.penjualan.transaksi', compact('datas', 'kode', 'total'));
     }
 
@@ -76,52 +77,49 @@ class transaksiController extends Controller
         $book = Book::where('buku_kode', $request->buku_kode)->get();
         foreach ($book as $bk) {
             $stok = $bk->stok;
+            $terjual = $bk->terjual;
             $id = $bk->id;
         }
         $new_stok = $stok - $request->jumlah_beli;
+        $new_terjual = $terjual + $request->jumlah_beli;
         $bayar = $request->bayar;
         $total = $request->total_harga;
-        $kembalian = $bayar - $total;
-        Penjualan::create([
-            'kode_faktur' => $request->kode_faktur,
-            'buku_kode' => $request->buku_kode,
-            'id_kasir' => $request->id_kasir,
-            'jumlah_beli' => $request->jumlah_beli,
-            'bayar' => $bayar,
-            'kembalian' => $kembalian,
-            'total_harga' => $total,
-            'tanggal' => $request->tanggal,
-        ]);
-        $set_stok = Book::find($id);
-        $set_stok->stok = $new_stok;
-        $set_stok->save();
-        $datas = Penjualan::where('kode_faktur', $request->kode_faktur)->get();
-        return view('dashboard.kasir.penjualan.struk', compact('datas'));
+        if($bayar < $total){
+            return redirect()->back()->with('fail', 'Harga bayar kurang dari yang seharusnya!');
+        }else {
+            $kembalian = $bayar - $total;
+            Penjualan::create([
+                'kode_faktur' => $request->kode_faktur,
+                'buku_kode' => $request->buku_kode,
+                'kasir' => $request->kasir,
+                'jumlah_beli' => $request->jumlah_beli,
+                'bayar' => $bayar,
+                'kembalian' => $kembalian,
+                'total_harga' => $total,
+                'tanggal' => $request->tanggal,
+            ]);
+            $set_book = Book::find($id);
+            $set_book->stok = $new_stok;
+            $set_book->terjual = $new_terjual;
+            $set_book->save();
+            $datas = Penjualan::where('kode_faktur', $request->kode_faktur)->get();
+            return view('dashboard.kasir.penjualan.struk', compact('datas'));
+        }
     }
 
     public function struk()
     {
-        $datas = Penjualan::orderBy('kode_faktur', 'desc')->first()->get();
-        foreach($datas as $data){
-            $kode_faktur = $data->kode_faktur;
-            $tanggal = $data->tanggal;
-            $username = $data->kasir['name'];
-            $judul = $data->book['judul'];
-            $jumlah_beli = $data->jumlah_beli;
-            $total_harga = $data->total_harga;
-            $bayar = $data->bayar;
-            $kembalian = $data->kembalian;
-        }
-        return view('dashboard.kasir.penjualan.struk_cek', compact('kode_faktur','tanggal','username','judul','jumlah_beli','total_harga','bayar','kembalian'));
+        $datas = Penjualan::orderBy('kode_faktur', 'desc')->limit(1)->get();
+        return view('dashboard.kasir.penjualan.struk', compact('datas'));
     }
 
     public function cetakStruk()
     {
-        $datas = Penjualan::orderBy('kode_faktur', 'desc')->first()->get();
+        $datas = Penjualan::orderBy('kode_faktur', 'desc')->limit(1)->get();
         foreach ($datas as $data) {
             $kode_faktur = $data->kode_faktur;
             $tanggal = $data->tanggal;
-            $username = $data->kasir['name'];
+            $username = $data->getKasir['name'];
             $judul = $data->book['judul'];
             $jumlah_beli = $data->jumlah_beli;
             $total_harga = $data->total_harga;

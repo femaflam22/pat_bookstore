@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Kasir</title>
+    
+    <link rel="shortcut icon" href="/img/kasir.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -74,7 +76,7 @@
                     <th scope="col">Tanggal</th>
                     <td scope="col">{{$data->tanggal}}</td>
                     <th scope="col">Kasir</th>
-                    <td scope="col">{{$data->kasir['name']}}</td>
+                    <td scope="col">{{$data->getKasir['name']}}</td>
                     </tr>
                     <tr>
                     <th scope="col">Judul Buku</th>

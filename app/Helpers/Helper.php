@@ -19,7 +19,7 @@ class Helper
             $last_number_length = strlen($increment_last_number);
             $og_length = $length - $last_number_length;
             $books = Book::all();
-            $last_number = $books->max('id');
+            $last_number = count($books);
         }
         $zeros = "";
         for($i=0; $i<$og_length; $i++){

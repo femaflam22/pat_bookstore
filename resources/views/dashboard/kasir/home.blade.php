@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Kasir</title>
+    
+    <link rel="shortcut icon" href="/img/kasir.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>

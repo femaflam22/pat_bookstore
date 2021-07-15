@@ -7,7 +7,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>kasir</title>
+    <title>Manager</title>
+    
+    <link rel="shortcut icon" href="/img/manager.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -77,6 +79,7 @@
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="{{route('manager.register')}}">Buat Akun</a>
+                            <a class="dropdown-item" href="{{route('manager.user.edit')}}">Edit User Akun</a>
                         </div>
                     </li>
                     <li class="dropdown breadcrumb-item">
@@ -90,6 +93,8 @@
                             <a class="dropdown-item" href="{{route('manager.penjualan')}}">Penjualan</a>
                             <a class="dropdown-item" href="{{route('manager.buku')}}">Data Buku</a>
                             <a class="dropdown-item" href="{{route('manager.filter.penulis')}}">Filter Penulis Buku</a>
+                            <a class="dropdown-item" href="{{route('manager.buku.takterjual')}}">Buku yang Takpernah Terjual</a>
+                            <a class="dropdown-item" href="{{route('manager.buku.terjual')}}">Buku yang Sering Terjual</a>
                             <a class="dropdown-item" href="{{route('manager.pasok')}}">Data Pasok</a>
                             <a class="dropdown-item" href="{{route('manager.filter.pasok')}}">Filter Pasok Buku</a>
                         </div>

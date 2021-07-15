@@ -29,14 +29,19 @@ class pasokController extends Controller
         $new_stok = $stok+$request->jumlah;
         $request->validate([
             'buku_kode'=>'required',
-            'id_distributor'=>'required',
+            'kode_distributor'=>'required',
             'jumlah'=>'required',
             'tanggal'=>'required',
         ]);
         $set_stok = Book::find($id);
         $set_stok->stok = $new_stok;
         $set_stok->save();
-        Pasok::create($request->all());
+        $pasok = new Pasok();
+        $pasok->buku_kode = $request->buku_kode;
+        $pasok->kode_distributor = $request->kode_distributor;
+        $pasok->jumlah = $request->jumlah;
+        $pasok->tanggal = $request->tanggal;
+        $pasok->save();
         return redirect()->back()->with('success', 'berhasil menambahkan data');
     }
 
@@ -53,7 +58,7 @@ class pasokController extends Controller
     {
         $request->validate([
             'buku_kode' => 'required',
-            'id_distributor' => 'required',
+            'kode_distributor' => 'required',
             'jumlah' => 'required',
             'tanggal' => 'required',
         ]);
@@ -77,11 +82,11 @@ class pasokController extends Controller
 
     public function pasokFilterReady($nama_distributor)
     {
-        $distri = Distributor::where('nama_distributor', $nama_distributor)->get('id');
-        foreach($distri as $book){
-            $id= $book->id;
+        $distri = Distributor::where('nama_distributor', $nama_distributor)->get();
+        foreach($distri as $dt){
+            $id= $dt->kode_distributor;
         }
-        $data_pasok = Pasok::where('id_distributor',$id)->get();
+        $data_pasok = Pasok::where('kode_distributor',$id)->get();
         $total = count($data_pasok);
         $no = 1;
         $nama = $nama_distributor;
@@ -90,17 +95,16 @@ class pasokController extends Controller
 
     public function pasokFilterCetak($nama)
     {
-        $distri = Distributor::where('nama_distributor', $nama)->get('id');
-        foreach ($distri as $book) {
-            $id = $book->id;
+        $distri = Distributor::where('nama_distributor', $nama)->get();
+        foreach ($distri as $dt) {
+            $id = $dt->kode_distributor;
         }
-        $data_pasok = Pasok::where('id_distributor', $id)->get();
+        $data_pasok = Pasok::where('kode_distributor', $id)->get();
         $no = 1;
         $total = count($data_pasok);
         $nama = $nama;
         $pdf = PDF::loadView('dashboard.admin.pasok.filter_cetak', compact('data_pasok', 'total', 'no', 'nama'));
         return $pdf->download('pasok_per_distributor.pdf');
-        // return view('dashboard.admin.buku.filter_cetak', compact('books', 'no', 'total', 'penulis'));
     }
 
     public function allData()

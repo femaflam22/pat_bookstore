@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Kasir</title>
+    
+    <link rel="shortcut icon" href="/img/kasir.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -124,14 +126,14 @@
                         <span class="text-danger mt-2">@error('jumlah_beli'){{ $message }}@enderror</span>
                     </div>
                     <div class="form-group">
-                        <label for="id_kasir">Kasir ID</label>
-                        <select class="form-control" id="id_kasir" name="id_kasir">
-                        <option>{{ old('id_kasir') }}</option>
+                        <label for="kasir">Kasir ID</label>
+                        <select class="form-control" id="kasir" name="kasir">
+                        <option>{{ old('kasir') }}</option>
                             @foreach ($users as $user)
-                                <option>{{$user->id}}</option>
+                                <option>{{$user->kode_user}}</option>
                             @endforeach
                         </select>
-                        <span class="text-danger mt-2">@error('id_kasir'){{ $message }}@enderror</span>
+                        <span class="text-danger mt-2">@error('kasir'){{ $message }}@enderror</span>
                     </div>
                     <button type="submit" class="btn btn-primary">Selanjutnya</button>
                 </form>

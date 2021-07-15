@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Admin</title>
+    
+    <link rel="shortcut icon" href="/img/admin.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -95,6 +97,8 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="{{route('admin.buku.data') }}">Semua Data Buku</a>
                             <a class="dropdown-item" href="{{ route('admin.buku.filter') }}">Filter Penulis Buku</a>
+                            <a class="dropdown-item" href="{{ route('admin.buku.takterjual') }}">Buku yang Tidak Pernah Terjual</a>
+                            <a class="dropdown-item" href="{{ route('admin.buku.terjual') }}">Buku yang Terjual</a>
                             <a class="dropdown-item" href="{{ route('admin.pasok.data') }}">Pasok Buku</a>
                             <a class="dropdown-item" href="{{ route('admin.pasok.filter') }}">Filter Pasok Buku</a>
                         </div>
@@ -144,6 +148,7 @@
                 <table class="table table-bordered text-center">
                 <thead class="thead-light">
                     <tr>
+                    <th scope="col">Kode Distributor</th>
                     <th scope="col">Nama Distributor</th>
                     <th scope="col">Alamat</th>
                     <th scope="col">Telpon</th>
@@ -154,6 +159,7 @@
                 <tbody>
                     @foreach ($distributors as $dtbt)
                     <tr>
+                    <td>{{$dtbt->kode_distributor}}</td>
                     <td>{{$dtbt->nama_distributor}}</td>
                     <td>{{$dtbt->alamat}}</td>
                     <td>{{$dtbt->telpon}}</td>

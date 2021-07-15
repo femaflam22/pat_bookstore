@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Manager</title>
+    
+    <link rel="shortcut icon" href="/img/manager.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -67,28 +69,30 @@
                 <a href="{{route('manager.faktur.cetak')}}" class="btn btn-success mb-3">Cetak</a>
                 <a href="{{route('manager.home')}}" class="btn btn-secondary mb-3">Kembali</a>
                 <table class="table table-bordered text-center">
+                    @foreach ($datas as $data)
                     <tr>
                     <th scope="col">No Faktur</th>
-                    <td scope="col">{{$kode_faktur}}</td>
+                    <td scope="col">{{$data->kode_faktur}}</td>
                     <th scope="col">Tanggal</th>
-                    <td scope="col">{{$tanggal}}</td>
+                    <td scope="col">{{$data->tanggal}}</td>
                     <th scope="col">Kasir</th>
-                    <td scope="col">{{$username}}</td>
+                    <td scope="col">{{$data->getKasir['name']}}</td>
                     </tr>
                     <tr>
                     <th scope="col">Judul Buku</th>
-                    <td scope="col">{{$judul}}</td>
+                    <td scope="col">{{$data->book['judul']}}</td>
                     <th scope="col">Jumlah Beli</th>
-                    <td scope="col">{{$jumlah_beli}}</td>
+                    <td scope="col">{{$data->jumlah_beli}}</td>
                     <th scope="col">Total Harga</th>
-                    <td scope="col">{{$total_harga}}</td>
+                    <td scope="col">{{$data->total_harga}}</td>
                     </tr>
                     <tr>
                     <th scope="col">Bayar</th>
-                    <td scope="col">{{$bayar}}</td>
+                    <td scope="col">{{$data->bayar}}</td>
                     <th scope="col">Kembalian</th>
-                    <td scope="col">{{$kembalian}}</td>
+                    <td scope="col">{{$data->kembalian}}</td>
                     </tr>
+                    @endforeach
                 </table>
             </div>
         </main>

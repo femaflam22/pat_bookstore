@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Manager</title>
+    
+    <link rel="shortcut icon" href="/img/manager.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -71,6 +73,7 @@
                 @endif
                 <div class="d-flex justify-content-between">
                     <div>
+                        <a href="{{route('manager.user.search.cetak',$search)}}" class="btn btn-success mb-3">Cetak</a>
                         <a href="{{route('manager.home')}}" class="btn btn-secondary mb-3">Kembali</a>
                         <a href="{{route('manager.user')}}" class="btn btn-info mb-3 text-white">Refresh</a>
                     </div>
@@ -84,6 +87,7 @@
                 <thead class="thead-light">
                     <tr>
                     <th scope="col">No</th>
+                    <th scope="col">Kode</th>
                     <th scope="col">Nama</th>
                     <th scope="col">Username</th>
                     <th scope="col">Alamat</th>
@@ -96,6 +100,7 @@
                     @foreach ($datas as $data)
                     <tr>
                     <td>{{$no++}}</td>
+                    <td>{{$data->kode_user}}</td>
                     <td>{{$data->name}}</td>
                     <td>{{$data->username}}</td>
                     <td>{{$data->address}}</td>

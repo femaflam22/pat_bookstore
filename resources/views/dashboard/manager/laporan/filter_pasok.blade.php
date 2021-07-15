@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Manager</title>
+    
+    <link rel="shortcut icon" href="/img/manager.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -91,6 +93,8 @@
                             <a class="dropdown-item" href="{{route('manager.penjualan')}}">Penjualan</a>
                             <a class="dropdown-item" href="{{route('manager.buku')}}">Data Buku</a>
                             <a class="dropdown-item" href="{{route('manager.filter.penulis')}}">Filter Penulis Buku</a>
+                            <a class="dropdown-item" href="{{route('manager.buku.takterjual')}}">Buku yang Takpernah Terjual</a>
+                            <a class="dropdown-item" href="{{route('manager.buku.terjual')}}">Buku yang Sering Terjual</a>
                             <a class="dropdown-item" href="{{route('manager.pasok')}}">Data Pasok</a>
                             <a class="dropdown-item" href="{{route('manager.filter.pasok')}}">Filter Pasok Buku</a>
                         </div>
@@ -102,7 +106,7 @@
             <div class="container px-4">
                 <div class="dropdown bg-muted px-3 py-3 text-center">
                     <a class="dropdown-toggle text-decoration-none text-secondary h3" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Pilih Nama Penulis
+                        Pilih Nama Distributor
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">

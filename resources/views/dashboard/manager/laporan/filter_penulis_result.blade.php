@@ -8,7 +8,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Manager</title>
-
+    
+    <link rel="shortcut icon" href="/img/manager.svg" type="image/x-icon">
+    
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 

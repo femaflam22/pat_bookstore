@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Kasir</title>
+    
+    <link rel="shortcut icon" href="/img/kasir.svg" type="image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -103,7 +105,7 @@
                     <td>{{$no++}}</td>
                     <td>{{$data->kode_faktur}}</td>
                     <td>{{$data->book['judul']}}</td>
-                    <td>{{$data->kasir['name']}}</td>
+                    <td>{{$data->getKasir['name']}}</td>
                     <td>{{$data->jumlah_beli}}</td>
                     <td>{{$data->total_harga}}</td>
                     <td>{{$data->bayar}}</td>

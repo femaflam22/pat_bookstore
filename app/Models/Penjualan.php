@@ -15,7 +15,7 @@ class Penjualan extends Model
     protected $fillable = [
         'kode_faktur',
         'buku_kode',
-        'id_kasir',
+        'kasir',
         'jumlah_beli',
         'bayar',
         'kembalian',
@@ -23,9 +23,9 @@ class Penjualan extends Model
         'tanggal',
     ];
 
-    public function kasir()
+    public function getKasir()
     {
-        return $this->hasOne(User::class, 'id', 'id_kasir');
+        return $this->hasOne(User::class, 'kode_user', 'kasir');
     }
     public function book()
     {

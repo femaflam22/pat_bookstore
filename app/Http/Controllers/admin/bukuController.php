@@ -89,7 +89,7 @@ class bukuController extends Controller
 
     public function bookFilter()
     {
-        $books = Book::all();
+        $books = Book::select('penulis')->distinct()->get();
         return view('dashboard.admin.buku.buku_filter', compact('books'));
     }
 
@@ -133,10 +133,19 @@ class bukuController extends Controller
     public function searchData(Request $request)
     {
         $search = $request->search;
-        $datas = Book::where('judul', 'LIKE', "%{$search}%")->simplePaginate(5);;
+        $datas = Book::where('judul', 'LIKE', "%{$search}%")->get();
         $no = 1;
         $total = count($datas);
-        return view('dashboard.admin.buku.data', compact('datas', 'no', 'total'))->with('i', (request()->input('page', 1) - 1) * 5);;;
+        return view('dashboard.admin.buku.data_search', compact('datas', 'no', 'total', 'search'));
+    }
+
+    public function cetakSearchData($judul)
+    {
+        $books = Book::where('judul',$judul)->get();
+        $no = 1;
+        $total = count($books);
+        $pdf = PDF::loadView('dashboard.admin.buku.data_cetak', compact('books', 'no', 'total'));
+        return $pdf->download('data_buku_search.pdf');
     }
 
     public function orderData()
@@ -145,7 +154,7 @@ class bukuController extends Controller
         $datas = Book::orderBy('stok','asc')->simplePaginate(5);
         $no = 1;
         $total = count($books);
-        return view('dashboard.admin.buku.data_order', compact('datas', 'no', 'total'))-> with('i', (request()->input('page', 1) - 1) * 5);;
+        return view('dashboard.admin.buku.data_order', compact('datas', 'no', 'total'))-> with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function cetakDataOrder()
@@ -155,5 +164,57 @@ class bukuController extends Controller
         $total = count($books);
         $pdf = PDF::loadView('dashboard.admin.buku.data_cetak', compact('books', 'no', 'total'));
         return $pdf->download('data_buku_terurut.pdf');
+    }
+
+    public function bukuTakterjual()
+    {
+        $books = Book::where('terjual', 0)->simplePaginate(5);
+        $no = 1;
+        $total = count($books);
+        return view('dashboard.admin.buku.data_takterjual', compact('books','no','total'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function searchBukuTakterjual(Request $request)
+    {
+        $search = $request->search;
+        $books = Book::where('judul', 'LIKE', "%{$search}%")->get();
+        $no = 1;
+        $total = count($books);
+        return view('dashboard.admin.buku.data_takterjual_search', compact('books', 'no', 'total'));
+    }
+
+    public function bukuTakterjualCetak()
+    {
+        $books = Book::where('terjual', 0)->get();
+        $no = 1;
+        $total = count($books);
+        $pdf = PDF::loadView('dashboard.admin.buku.takterjual_cetak', compact('books', 'no', 'total'));
+        return $pdf->download('data_buku_takterjual.pdf');
+    }
+
+    public function bukuTerjual()
+    {
+        $books = Book::where('terjual', '>', 0)->orderBy('stok', 'desc')->simplePaginate(5);
+        $no = 1;
+        $total = count($books);
+        return view('dashboard.admin.buku.data_terjual', compact('books', 'no', 'total'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function bukuTerjualSearch(Request $request)
+    {
+        $search = $request->search;
+        $books = Book::where('judul', 'LIKE', "%{$search}%")->get();
+        $no = 1;
+        $total = count($books);
+        return view('dashboard.admin.buku.data_terjual_search', compact('books', 'no', 'total'));
+    }
+
+    public function bukuTerjualCetak()
+    {
+        $books = Book::where('terjual', '>', 0)->get();
+        $no = 1;
+        $total = count($books);
+        $pdf = PDF::loadView('dashboard.admin.buku.terjual_cetak', compact('books', 'no', 'total'));
+        return $pdf->download('data_buku_terjual.pdf');
     }
 }

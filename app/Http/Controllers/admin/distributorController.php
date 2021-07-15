@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Distributor;
+use App\Helpers\Distri;
 
 class distributorController extends Controller
 {
@@ -28,7 +29,14 @@ class distributorController extends Controller
             'telpon' => 'required',
         ]);
 
-        Distributor::create($request->all());
+        $dtbt = new Distributor();
+        $dtbt->nama_distributor = $request->nama_distributor;
+        $dtbt->alamat = $request->alamat;
+        $dtbt->telpon = $request->telpon;
+        $getUser = Distributor::all();
+        $id = count($getUser);
+        $dtbt->kode_distributor = Distri::IDGenerator(new Distributor(), 'kode_user', 4, 'DB', $id);
+        $save = $dtbt->save();
         return redirect()->back()->with('success', 'berhasil menambahkan data');
     }
 

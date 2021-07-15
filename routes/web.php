@@ -79,10 +79,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/buku/data/order', [bukuController::class, 'orderData'])->name('buku.data.order');
         Route::post('/buku/data', [bukuController::class, 'searchData'])->name('buku.data.search');
         Route::get('/buku/data/cetak', [bukuController::class, 'cetakData'])->name('buku.data.cetak');
+        Route::get('/buku/data/search/cetak/{judul}', [bukuController::class, 'cetakSearchData'])->name('buku.data_search.cetak');
         Route::get('/buku/data/order/cetak', [bukuController::class, 'cetakDataOrder'])->name('buku.data.order.cetak');
         Route::get('/buku/filter', [bukuController::class, 'bookFilter'])->name('buku.filter');
         Route::get('/buku/filter/{buku}', [bukuController::class, 'bookFilterReady'])->name('buku.filter.result');
         Route::get('/buku/filter/cetak/{buku}', [bukuController::class, 'bookFilterCetak'])->name('buku.filter.cetak');
+        Route::get('/buku/takterjual', [bukuController::class, 'bukuTakterjual'])->name('buku.takterjual');
+        Route::post('/buku/takterjual/search', [bukuController::class, 'searchBukuTakterjual'])->name('buku.takterjual.search');
+        Route::get('/buku/takterjual/cetak', [bukuController::class, 'bukuTakterjualCetak'])->name('buku.takterjual.cetak');
+        Route::get('/buku/terjual', [bukuController::class, 'bukuTerjual'])->name('buku.terjual');
+        Route::post('/buku/terjual/search', [bukuController::class, 'bukuTerjualSearch'])->name('buku.terjual.search');
+        Route::get('/buku/terjual/cetak', [bukuController::class, 'bukuTerjualCetak'])->name('buku.terjual.cetak');
         Route::get('/pasok', [pasokController::class, 'index'])->name('pasok');
         Route::post('/pasok', [pasokController::class, 'searchPasok'])->name('pasok.search');
         Route::post('/pasok/add', [pasokController::class, 'add'])->name('pasok.add');
@@ -127,6 +134,12 @@ Route::prefix('manager')->name('manager.')->group(function () {
         Route::get('/buku/filter/penulis', [managerController::class, 'filterPenulis'])->name('filter.penulis');
         Route::get('/buku/filter/{penulis}/result', [managerController::class, 'filterPenulisResult'])->name('filter.penulis.result');
         Route::get('/buku/filter/{penulis}/cetak', [managerController::class, 'filterPenulisCetak'])->name('filter.penulis.cetak');
+        Route::get('/buku/takterjual', [managerController::class, 'bukuTakterjual'])->name('buku.takterjual');
+        Route::post('/buku/takterjual/search', [managerController::class, 'bukuTakterjualSearch'])->name('buku.takterjual.search');
+        Route::get('/buku/takterjual/cetak', [managerController::class, 'bukuTakterjualCetak'])->name('buku.takterjual.cetak');
+        Route::get('/buku/terjual', [managerController::class, 'bukuTerjual'])->name('buku.terjual');
+        Route::post('/buku/terjual/search', [managerController::class, 'bukuTerjualSearch'])->name('buku.terjual.search');
+        Route::get('/buku/terjual/cetak', [managerController::class, 'bukuTerjualCetak'])->name('buku.terjual.cetak');
         Route::get('/pasok', [managerController::class, 'dataPasok'])->name('pasok');
         Route::post('/pasok/search', [managerController::class, 'searchPasok'])->name('pasok.search');
         Route::post('/pasok/search/cetak', [managerController::class, 'cetakPasokSearch'])->name('pasok.search.cetak');
@@ -137,6 +150,7 @@ Route::prefix('manager')->name('manager.')->group(function () {
         Route::get('/user', [managerController::class, 'getUser'])->name('user');
         Route::get('/user/cetak', [managerController::class, 'cetakUser'])->name('user.cetak');
         Route::post('/user/search', [managerController::class, 'searchUser'])->name('user.search');
+        Route::get('/user/search/cetak/{nama}', [managerController::class, 'searchUserCetak'])->name('user.search.cetak');
         Route::get('/user/edit', [managerController::class, 'editUser'])->name('user.edit');
         Route::post('/user/edit/select', [managerController::class, 'editUserSelected'])->name('user.edit.select');
         Route::get('/user/edit/select/{id}', [managerController::class, 'updateUser'])->name('user.update');
